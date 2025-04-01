@@ -53,3 +53,9 @@ Once the setup is complete, you can run the script using:
 ```bash
 python sample-camera.py
 ```
+
+## Miscellaneous Stuff
+If you see logs in the console that look like
+![image](https://github.com/user-attachments/assets/a3401523-62dc-4a17-bef9-0b2ef61dad64)
+do not worry! This is totally normal for mediapipe based scripts.
+
