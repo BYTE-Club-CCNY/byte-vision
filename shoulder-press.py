@@ -57,5 +57,3 @@ def shoulder_press(path):
         '-crf', '23',
         output_mp4
     ])
-
-shoulder_press('RPReplay_Final1746250197.mov')
