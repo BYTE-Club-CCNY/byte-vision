@@ -2,14 +2,31 @@ def BenchPress():
     import cv2
     import ultralytics
     from ultralytics import solutions
-    from ultralytics.utils.downloads import safe_download
+    from collections import deque
+    import os
+    import subprocess
 
-    cap = cv2.VideoCapture("Demos/Benchpress.demo.video.mp4")
+    video_path = "Demos/Benchpress.demo.video.mp4"
+    cap = cv2.VideoCapture(video_path)
     assert cap.isOpened(), "Error reading video file"
 
     # Video writer
-    w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
-    video_writer = cv2.VideoWriter("Benchpress.demo.video.output.mp4", cv2.VideoWriter_fourcc(*"H264"), fps, (w, h))
+    w, h, fps = (int(cap.get(x)) for x in (
+        cv2.CAP_PROP_FRAME_WIDTH,
+        cv2.CAP_PROP_FRAME_HEIGHT,
+        cv2.CAP_PROP_FPS,
+    ))
+
+    cwd = os.getcwd()
+    output_avi = os.path.join(cwd, "Benchpress.demo.video.output.avi")
+    output_mp4 = os.path.join(cwd, "Benchpress.demo.video.output.mp4")
+    
+    video_writer = cv2.VideoWriter(
+        output_avi,
+        cv2.VideoWriter_fourcc(*"mp4v"),
+        fps,
+        (w, h)
+    )
 
     # Init AIGym
     gym = solutions.AIGym(
@@ -21,14 +38,32 @@ def BenchPress():
         verbose=False,
     )
 
-    # Process video
+    queue = deque(maxlen=fps)
+
     while cap.isOpened():
         success, im0 = cap.read()
         if not success:
             print("Video frame is empty or video processing has been successfully completed.")
             break
-        results = gym(im0)                      # monitor workouts on each frame
-        video_writer.write(results.plot_im)     # write the output frame in file.
+        
+        results = gym(im0)
+        curr_stage = results.workout_stage[0]
+        queue.append(curr_stage)
 
-    cv2.destroyAllWindows()
+        if len(queue) == queue.maxlen and len(set(queue)) == 1:
+            print("Check your form.")
+
+        video_writer.write(results.plot_im)
+
+    cap.release()
     video_writer.release()
+    cv2.destroyAllWindows()
+
+    # Convert .avi to .mp4 using ffmpeg
+    subprocess.run([
+        'ffmpeg', '-i', output_avi,
+        '-c:v', 'libx264',
+        '-preset', 'medium',
+        '-crf', '23',
+        output_mp4
+    ])
