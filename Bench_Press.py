@@ -6,7 +6,7 @@ def BenchPress():
     import os
     import subprocess
 
-    video_path = "Demos/Benchpress.demo.video.mp4"
+    video_path = "vids/Benchpress.demo.video.mp4"
     cap = cv2.VideoCapture(video_path)
     assert cap.isOpened(), "Error reading video file"
 
