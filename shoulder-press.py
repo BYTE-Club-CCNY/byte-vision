@@ -6,7 +6,7 @@ import subprocess
 import os
 
 def shoulder_press():
-    cap = cv2.VideoCapture('vids/ShoulderPressDemo.mp4') #note from jawad: adding a manual path to the video file. update the filename to the correct one.
+    cap = cv2.VideoCapture('vids/ShoulderPressDemo.mov') #note from jawad: adding a manual path to the video file. update the filename to the correct one.
     assert cap.isOpened(), "Error reading video file"
     w, h, fps = (int(cap.get(x)) for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS))
 
