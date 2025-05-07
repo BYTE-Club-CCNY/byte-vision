@@ -3,6 +3,7 @@ from Bench_Press import BenchPress
 from shoulder_press import shoulder_press
 from wall_angel import WallAngel
 import streamlit as st
+from upload import upload
 
 st.title("Byte-Vision")
 st.subheader("Let's track your workout form!") #im not creative :(
@@ -29,7 +30,9 @@ elif option == "Bench Press":
 
 elif option == "Shoulder Press":
     st.write("You selected Shoulder Press")
-    shoulder_press()
+    vid_path = upload()
+    if vid_path:
+        shoulder_press(vid_path)
 
 elif option == "Wall Angel":
     st.write("You selected Wall Angel")
