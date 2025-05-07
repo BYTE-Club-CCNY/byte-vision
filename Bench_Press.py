@@ -33,7 +33,7 @@ def BenchPress():
 
         # Init AIGym
         gym = solutions.AIGym(
-            show=True,                  # Display the frame
+            #show=True,                  # Display the frame
             kpts=[6, 8, 10],            # keypoints index of person for monitoring specific exercise, by default it's for pushup
             down_angle=20,
             model="yolo11n-pose.pt",    # Path to the YOLO11 pose estimation model file
@@ -57,7 +57,7 @@ def BenchPress():
                 print("Check your form.")
 
             video_writer.write(results.plot_im)
-            
+            cv2.imshow("Bench Press Tracker", results.plot_im)
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
     except Exception as e:

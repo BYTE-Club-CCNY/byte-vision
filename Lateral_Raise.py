@@ -73,7 +73,7 @@ def lateral_raise():
         #solutions.AIGym.process = new_process
 
         othergym = solutions.AIGym(
-            show=True,  # Display the frame
+            #show=True,  # Display the frame
             kpts=[7, 0, 8],  # keypoints index of person for monitoring specific exercise, by default it's for pushup
             model="yolo11n-pose.pt",  # Path to the YOLO11 pose estimation model file
             line_width=4,  # Adjust the line width for bounding boxes and text display
@@ -129,7 +129,7 @@ def lateral_raise():
             #if angle up angle is passed again when bool is flipped, partial detected
             #reset bool at bottom.
         
-            
+            cv2.imshow("Lateral Raise Tracker", results.plot_im)
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break    
