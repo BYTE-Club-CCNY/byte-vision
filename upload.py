@@ -10,11 +10,11 @@ def upload():
             return
         
         cwd = os.getcwd()
-        vid_path = os.path.join(cwd, f'uploads/{vid.name}')
+        vid_path = os.path.join(cwd, f'vids/{vid.name}')
 
         with open(vid_path, "wb") as f:
             f.write(vid.read())
-        
+        print(vid_path)
         return vid_path
     except Exception as e:
         st.error(f'Error: {e}')

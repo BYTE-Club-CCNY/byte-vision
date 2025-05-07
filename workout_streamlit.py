@@ -31,9 +31,9 @@ elif option == "Bench Press":
 elif option == "Shoulder Press":
     st.write("You selected Shoulder Press")
     vid_path = upload()
-    if vid_path:
+    if vid_path and st.button("Start Shoulder Press Analysis"):
         shoulder_press(vid_path)
-
+    
 elif option == "Wall Angel":
     st.write("You selected Wall Angel")
     WallAngel()

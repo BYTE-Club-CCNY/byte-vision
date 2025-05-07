@@ -15,9 +15,11 @@ def shoulder_press(vid_path):
         
         os.makedirs("output_vids", exist_ok=True)
         cwd = os.getcwd()
-        output_avi = os.path.join(cwd, "output_vids/Shoulderpress.demo.video.output.avi")
-        output_mp4 = os.path.join(cwd, "output_vids/Shoulderpress.demo.video.output.mp4")
+        #output_avi = os.path.join(cwd, "output_vids/Shoulderpress.demo.video.output.avi")
+        #output_mp4 = os.path.join(cwd, "output_vids/Shoulderpress.demo.video.output.mp4")
 
+        output_avi = os.path.join(cwd, "Shoulderpress.demo.video.output.avi")
+        output_mp4 = os.path.join(cwd, "Shoulderpress.demo.video.output.mp4") #dont really need output folder, all mp4s are gitignored
         if os.path.exists(output_avi):
             os.remove(output_avi)
 
@@ -50,8 +52,6 @@ def shoulder_press(vid_path):
                 print('Check your form.')
             video_writer.write(results.plot_im)
 
-            if st.button('Stop'):
-                break
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
     except Exception as e:
@@ -61,10 +61,10 @@ def shoulder_press(vid_path):
         cap.release()
         cv2.destroyAllWindows()
         video_writer.release()
-
+        '''
         if os.path.exists(vid_path):
             os.remove(vid_path)
-
+        '''
         if os.path.exists(output_mp4):
             os.remove(output_mp4)
 
@@ -76,6 +76,6 @@ def shoulder_press(vid_path):
             '-y',
             output_mp4
         ])
-
+    return output_mp4
 if __name__ == "__main__":
     shoulder_press()
