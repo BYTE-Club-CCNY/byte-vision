@@ -18,9 +18,9 @@ def WallAngel():
 
         # Init AIGym
         gym = solutions.AIGym(
-            show=True,  # Display the frame
-            down_angle=80,
-            up_angle=95,
+            #show=True,  # Display the frame
+            down_angle=95,
+            up_angle=125,
             kpts=[6, 8, 10],  # keypoints index of person for monitoring specific exercise, by default it's for pushup. So for wall angel I used same keypoints, since we mostly track shoulder, elbow and arm position.
             model="yolo11n-pose.pt",  # Path to the YOLO11 pose estimation model file
             line_width=4,  # Adjust the line width for bounding boxes and text display
@@ -35,7 +35,7 @@ def WallAngel():
                 break
             results = gym(im0)  # monitor workouts on each frame
             video_writer.write(results.plot_im)  # write the output frame in file.
-            
+            cv2.imshow("Wall Angel Tracker", results.plot_im)
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
     except Exception as e:

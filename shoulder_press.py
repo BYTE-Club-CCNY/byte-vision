@@ -20,7 +20,7 @@ def shoulder_press():
 
         video_writer = cv2.VideoWriter(output_avi, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
         gym = solutions.AIGym(
-            show=True,
+            #show=True,
             kpts=[5, 7, 9],
             model="yolo11n-pose.pt",  # Path to the YOLO11 pose estimation model file
             line_width=4,  # Adjust the line width for bounding boxes and text display
@@ -43,9 +43,15 @@ def shoulder_press():
                 st.toast("Check your form.")
                 print('Check your form.')
             video_writer.write(results.plot_im)
+<<<<<<< HEAD
 
             if st.button('Stop'):
                 break
+=======
+            cv2.imshow("Shoulder Press Tracker", results.plot_im)
+            #if st.button('Stop'):
+                #break
+>>>>>>> 77c9ed192edb65c8846a2d6cfe787dd2e079f2d6
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
     except Exception as e:
