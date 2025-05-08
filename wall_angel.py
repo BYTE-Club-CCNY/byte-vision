@@ -19,25 +19,62 @@ def WallAngel():
         # Init AIGym
         gym = solutions.AIGym(
             #show=True,  # Display the frame
-            down_angle=95,
-            up_angle=125,
+            down_angle=115,
+            up_angle=140,
             kpts=[6, 8, 10],  # keypoints index of person for monitoring specific exercise, by default it's for pushup. So for wall angel I used same keypoints, since we mostly track shoulder, elbow and arm position.
             model="yolo11n-pose.pt",  # Path to the YOLO11 pose estimation model file
             line_width=4,  # Adjust the line width for bounding boxes and text display
             verbose=False,
         )
 
-        # Process video
+        # Process video and implement logic
+        min_angle = 95
+        max_angle = 130
+        angle_range_up = False
+        angle_range_down = False
+        prev_state = None
+        warning_message = ""
+        step = 0
+
         while cap.isOpened():
             success, im0 = cap.read()
             if not success:
                 print("Video frame is empty or video processing has been successfully completed.")
                 break
+
             results = gym(im0)  # monitor workouts on each frame
             video_writer.write(results.plot_im)  # write the output frame in file.
             cv2.imshow("Wall Angel Tracker", results.plot_im)
+
+            angle = results.workout_angle[0]
+            state = results.workout_stage[0]
+
+            if state != prev_state and step!=0:
+                if (angle_range_up==False) and state=="down":
+                    warning_message = "You didn't raise your hands high enough last time."
+                    bad_form = True
+                    print(warning_message, state)
+
+                if (angle_range_down==False) and state=="up":
+                    warning_message = "You didn't lower your hands down enough last time."
+                    bad_form = True
+                    print(warning_message, state)
+
+                angle_range_up, angle_range_down = False, False
+                
+            if state == "up":
+                if angle >= max_angle:
+                    angle_range_up = True
+            elif state == "down":
+                if angle <= min_angle:
+                    angle_range_down = True
+
+            prev_state = state
+
+
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
+
     except Exception as e:
         print(f"An error occurred: {e}")
     finally:
@@ -47,3 +84,4 @@ def WallAngel():
 
 if __name__ == "__main__":
     WallAngel()
+WallAngel()
